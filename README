@@ -65,7 +65,7 @@ admin 1800   CNAME example.com.                    ; id=7786354, gtd=DEFAULT
 @     1800   MX    10 mailstore1.secureserver.net. ; id=7693175, gtd=DEFAULT
 @     1800   MX    0 smtp.secureserver.net.        ; id=7693176, gtd=DEFAULT
 
-$ ./dnsme record -id 7693175 -o json example.com.com
+$ ./dnsme record -id 7693175 -o json example.com
 {"name":"","id":7693175,"type":"MX","data":"10 mailstore1.secureserver.net.",
 "gtdLocation":"DEFAULT","ttl":1800,"password":""}
 
