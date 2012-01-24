@@ -5,7 +5,7 @@ API.
 Installation
 ------------
 
-The tool is written in Go (http://goang.org) and was last built with go
+The tool is written in Go (http://golang.org) and was last built with go
 version "weekly.2012-01-20 11362".  Binaries are available for download.
 
 $ cd src
