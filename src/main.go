@@ -85,6 +85,20 @@ func (c *Command) Usage() {
 
 func main() {
 
+	flag.Usage = usage
+	flag.Parse()
+
+	args := flag.Args()
+	if len(args) < 1 {
+		usage()
+		return
+	}
+
+	if args[0] == "help" {
+		help(args[1:])
+		return
+	}
+
 	api_url = os.Getenv("DNSME_API_URL")
 	if api_url == "" {
 		api_url = API_URL
@@ -102,18 +116,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	flag.Usage = usage
-	flag.Parse()
-
-	args := flag.Args()
-	if len(args) < 1 {
-		usage()
-	}
-
-	if args[0] == "help" {
-		help(args[1:])
-		return
-	}
 
 	for _, cmd := range commands {
 		if cmd.Name() == args[0] && cmd.Run != nil {
