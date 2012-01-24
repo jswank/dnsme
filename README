@@ -1,11 +1,12 @@
-This is a command line tool that can be used to manage DNS information hosted
-at DNS Made Easy (http://www.dnsmadeeasy.com) using their REST API.  
+This is a command line tool that can be used to manage DNS information
+hosted at DNS Made Easy (http://www.dnsmadeeasy.com) using their REST
+API.  
 
 Installation
 ------------
 
-The tool is written in Go (http://goang.org) and was last built with go version
-"weekly.2012-01-20 11362".  Binaries are available for download.
+The tool is written in Go (http://goang.org) and was last built with go
+version "weekly.2012-01-20 11362".  Binaries are available for download.
 
 $ cd src
 $ make
@@ -55,14 +56,14 @@ $ ./dnsme list
 example.com
 
 $ ./dnsme records example.com
-@                    1800   A     92.250.168.100                   ; id=7693172, gtd=DEFAULT
-dev                  1800   A     92.250.168.91                    ; id=7700700, gtd=DEFAULT
-dev2                 1800   A     98.74.181.1                      ; id=7700747, gtd=DEFAULT
-www                  1800   CNAME example.com.                     ; id=7693173, gtd=DEFAULT
-m                    1800   CNAME example.com.                     ; id=7786353, gtd=DEFAULT
-admin                1800   CNAME example.com.                     ; id=7786354, gtd=DEFAULT
-@                    1800   MX    10 mailstore1.secureserver.net.  ; id=7693175, gtd=DEFAULT
-@                    1800   MX    0 smtp.secureserver.net.         ; id=7693176, gtd=DEFAULT
+@     1800   A     92.250.168.100                  ; id=7693172, gtd=DEFAULT
+dev   1800   A     92.250.168.91                   ; id=7700700, gtd=DEFAULT
+dev2  1800   A     98.74.181.1                     ; id=7700747, gtd=DEFAULT
+www   1800   CNAME example.com.                    ; id=7693173, gtd=DEFAULT
+m     1800   CNAME example.com.                    ; id=7786353, gtd=DEFAULT
+admin 1800   CNAME example.com.                    ; id=7786354, gtd=DEFAULT
+@     1800   MX    10 mailstore1.secureserver.net. ; id=7693175, gtd=DEFAULT
+@     1800   MX    0 smtp.secureserver.net.        ; id=7693176, gtd=DEFAULT
 
 $ ./dnsme record -id 7693175 -o json example.com.com
 {"name":"","id":7693175,"type":"MX","data":"10 mailstore1.secureserver.net.",
@@ -70,8 +71,8 @@ $ ./dnsme record -id 7693175 -o json example.com.com
 
 Issues
 ------
-* The REST API indicates that records can be searched based on a number of fields.  This does not
-appear to work.
+* The REST API indicates that records can be searched based on a number of fields. 
+This does not appear to work.
 
 Todo
 ----
