@@ -331,27 +331,26 @@ func runAddRecord(cmd *Command, args []string) (err error) {
 		return
 	}
 
-
 	if record.Data == "" {
 		record.Data = domain + "."
 	}
 
 	switch outputType {
-		default:
-			tmpl(os.Stdout, recordTemplate, record)
-		case "json":
-			{
-				b, _ := json.Marshal(record)
-				os.Stdout.Write(b)
-			}
-		case "csv":
-			{
-				r := []string{record.Name, strconv.Itoa(record.TTL), record.Type, record.Data, strconv.Itoa(record.ID), record.GtdLocation}
-				w := csv.NewWriter(os.Stdout)
-				w.Write(r)
-				w.Flush()
-			}
+	default:
+		tmpl(os.Stdout, recordTemplate, record)
+	case "json":
+		{
+			b, _ := json.Marshal(record)
+			os.Stdout.Write(b)
 		}
+	case "csv":
+		{
+			r := []string{record.Name, strconv.Itoa(record.TTL), record.Type, record.Data, strconv.Itoa(record.ID), record.GtdLocation}
+			w := csv.NewWriter(os.Stdout)
+			w.Write(r)
+			w.Flush()
+		}
+	}
 
 	return
 

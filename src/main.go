@@ -116,7 +116,6 @@ func main() {
 		os.Exit(1)
 	}
 
-
 	for _, cmd := range commands {
 		if cmd.Name() == args[0] && cmd.Run != nil {
 			addGlobalFlags(&cmd.Flag)
@@ -180,6 +179,7 @@ func help(args []string) {
 	fmt.Fprintf(os.Stderr, "Unknown help topic %#q.  Run 'dnsme help'.\n", arg)
 	os.Exit(2) // failed at 'dnsme help cmd'
 }
+
 /*
 func printOutput(r *http.Response) {
 	io.Copy(os.Stdout, r.Body)
