@@ -6,7 +6,8 @@ Installation
 ------------
 
 The tool is written in Go (http://golang.org) and was last built with go
-version "weekly.2012-01-20 11362".  Binaries are available for download.
+version "weekly.2012-01-20 11362".  Binaries are available for download:
+	https://github.com/jswank/dnsme/downloads
 
 $ cd src
 $ make
