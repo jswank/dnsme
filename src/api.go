@@ -42,7 +42,7 @@ type apiRecord struct {
 	Data        string   `json:"data"`
 	GtdLocation string   `json:"gtdLocation"`
 	TTL         int      `json:"ttl"`
-	Password    string   `json:"password"`
+	Password    string   `json:"password,omitempty"`
 	Error       []string `json:"error,omitempty"`
 }
 
