@@ -33,10 +33,15 @@ Available commands are:
 {{range .}}{{if .Run}}
     {{.Name | printf "%-16s"}} {{.Short}}{{end}}{{end}}
 
-All commands accept the flag "-o" to specify the output type.  Available
-output types are "csv", "json", or the default text-based "std".
-
 Use "dnsme help [command]" for more information about a command.
+
+Global flags:
+
+The -d flag can be used to print raw HTTP requests and responses to
+stderr.
+
+The flag "-o" specifies the output type.  Available output types are
+"csv", "json", or the default text-based "std".
 
 `
 
@@ -52,6 +57,9 @@ var domainInfoTemplate = `{{range .NameServers}}{{printf "Nameserver: %s\n" .}}{
 `
 var domainInfoTemplateCSV = `{{.Name}},{{range .NameServers}}{{.}} {{end}},{{range .VanityNameServers}}{{.}} {{end}},{{.GtdEnabled}}
 `
+
+var secondaryTemplate = `{{range .IP}}{{printf "IP: %s\n" .}}{{end}}`
+var secondaryTemplateCSV = `{{.Name}},{{range .IP}}{{.}} {{end}}`
 
 // looks like zone file entries
 var recordTemplate = `{{if .Name}}{{printf "%-20s" .Name}}{{else}}{{printf "%-20s" "@"}}{{end}} {{printf "%-6d".TTL}} {{printf "%-5s".Type}} {{if .Data}}{{printf "%-32s" .Data}}{{else}}{{printf "%-32s" "@"}}{{end}} ; id={{printf "%-7d" .ID}}, gtd={{.GtdLocation}}

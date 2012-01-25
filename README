@@ -5,14 +5,17 @@ API.
 Installation
 ------------
 
-$ cd src
-$ make
+Binaries (statically linked) are available for download at
+https://github.com/jswank/dnsme/downloads
 
 The tool is written in Go (http://golang.org) and was last built with go
-version "weekly.2012-01-20 11362". 
+version "weekly.2012-01-20 11362".   To compile, the Go tool chain must 
+be installed- see http://weekly.golang.org/doc/install.html for details.
 
-Binaries (statically linked) are available for download:
-	https://github.com/jswank/dnsme/downloads
+Once the go tool chain is installed, compilation steps are:
+
+$ cd src
+$ make
 
 Usage
 -----
@@ -21,7 +24,6 @@ $ export DNSME_API_URL=http://api.dnsmadeeasy.com/V1.2
 $ export DNSME_API_KEY=8j7dn64b-83jc-48jd-0913-98wrhjd601df
 $ export DNSME_SECRET_KEY=93jsmq86-11hs-00ls-tnd8-8djdnb98a74c
 
-$ ./dnsme help
 usage: dnsme command [arguments]
 
 'dnsme' is a command-line interface to the DNS Made Easy REST API.  In
@@ -37,10 +39,14 @@ The following environment variables should be set:
 
 Available commands are:
 
-    list             lists all domains
-    info             returns information about a domain
+    domains          lists all domains
+    domain           returns information about a domain
     add-domain       adds a domains
     delete-domain    deletes a domain
+    secondaries      lists all secondary domains
+    secondary        returns information about a secondary domain
+    add-secondary    adds a secondary domains
+    delete-secondary deletes a secondary domain
     records          return records in a domain
     record           returns a specific record id from a domain
     add-record       add a new record
@@ -49,13 +55,22 @@ Available commands are:
     import           import domain info & records
     export           export domain info & records
 
-All commands accept the flag "-o" to specify the output type.  Available
-output types are "csv", "json", or the default text-based "std".
-
 Use "dnsme help [command]" for more information about a command.
 
-$ ./dnsme list
+Global flags:
+
+The -d flag can be used to print raw HTTP requests and responses to
+stderr.
+
+The flag "-o" specifies the output type.  Available output types are
+"csv", "json", or the default text-based "std".
+
+$ ./dnsme domains
 example.com
+example.org
+
+$ ./dnsme secondaries
+example.net
 
 $ ./dnsme records example.com
 @     1800   A     92.250.168.100                  ; id=7693172, gtd=DEFAULT
@@ -73,6 +88,5 @@ $ ./dnsme record -id 7693175 -o json example.com
 
 Todo
 ----
-* Support for secondary name servers
 * Support for HTTP-RED records
 * Smarter domain import

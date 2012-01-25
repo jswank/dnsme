@@ -22,6 +22,7 @@ var (
 	secret_key string
 
 	outputType        string
+	debug             bool
 	requestsRemaining int
 )
 
@@ -30,6 +31,10 @@ var commands = []*Command{
 	infoDomain,
 	addNewDomain,
 	delDomain,
+	listSecondaries,
+	infoSecondary,
+	addNewSecondary,
+	delSecondary,
 	records,
 	record,
 	addRecord,
@@ -144,6 +149,7 @@ func main() {
 
 func addGlobalFlags(fs *flag.FlagSet) {
 	fs.StringVar(&outputType, "o", "std", "Output type (std, json, csv)")
+	fs.BoolVar(&debug, "d", false, "Debug output")
 }
 
 func printUsage(w io.Writer) {

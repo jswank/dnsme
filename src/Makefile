@@ -6,6 +6,7 @@ GOFILES = \
 	api.go \
 	template.go \
 	domains.go \
+	secondary.go \
 	records.go \
 	export.go \
 	import.go \

@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/http/httputil"
 	"net/url"
 	"os"
 	"strconv"
@@ -20,17 +21,18 @@ type apiDomainList struct {
 	List []string `json:"list"`
 }
 
-type apiSecondary struct {
-	Name string   `json:"name"`
-	IP   []string `json:"ip"`
-}
-
 type apiDomain struct {
 	Name              string   `json:"name"`
 	NameServers       []string `json:"nameServer"`
 	VanityNameServers []string `json:"vanityNameServers"`
 	GtdEnabled        bool     `json:"gtdEnabled"`
 	Error             []string `json:"error,omitempty"`
+}
+
+type apiSecondary struct {
+	Name  string   `json:"name"`
+	IP    []string `json:"ip"`
+	Error []string `json:"error,omitempty"`
 }
 
 type apiRecord struct {
@@ -146,6 +148,122 @@ func addDomain(domain apiDomain) (domainResponse apiDomain, err error) {
 func deleteDomain(domain string) (err error) {
 
 	req, err := http.NewRequest("DELETE", api_url+"/domains/"+domain, nil)
+	if err != nil {
+		return
+	}
+	addDnsmeHeaders(req)
+
+	_, err = makeRequest(req)
+	if err != nil {
+		return
+	}
+
+	return
+
+}
+
+func getSecondaryList() (domains apiDomainList, err error) {
+
+	req, err := http.NewRequest("GET", api_url+"/secondary/", nil)
+	if err != nil {
+		return
+	}
+	addDnsmeHeaders(req)
+
+	resp, err := makeRequest(req)
+	if err != nil {
+		return
+	}
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return
+	}
+	err = json.Unmarshal(body, &domains)
+	if err != nil {
+		return
+	}
+
+	return
+}
+
+func getSecondary(domain string) (info apiSecondary, err error) {
+
+	req, err := http.NewRequest("GET", api_url+"/secondary/"+domain, nil)
+	if err != nil {
+		return
+	}
+	addDnsmeHeaders(req)
+
+	resp, err := makeRequest(req)
+	if err != nil {
+		return
+	}
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return
+	}
+	err = json.Unmarshal(body, &info)
+	if err != nil {
+		return
+	}
+	if len(info.Error) > 0 {
+		errStr := strings.Join(info.Error, " ")
+		err = errors.New(errStr)
+		return
+	}
+
+	return
+
+}
+
+func addSecondary(s apiSecondary) (secondary apiSecondary, err error) {
+
+	/* TODO: use json.Encoder or something providing an io.Reader? */
+	jsonBody, err := json.Marshal(s)
+	if err != nil {
+		return
+	}
+
+	var buf bytes.Buffer
+	buf.Write(jsonBody)
+	// END TODO	
+
+	req, err := http.NewRequest("PUT", api_url+"/secondary/"+s.Name, &buf)
+	if err != nil {
+		return
+	}
+	addDnsmeHeaders(req)
+
+	req.Header.Add("content-type", "application/json")
+
+	resp, err := makeRequest(req)
+	if err != nil {
+		return
+	}
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return
+	}
+
+	err = json.Unmarshal(body, &secondary)
+	if err != nil {
+		return
+	}
+
+	if len(secondary.Error) > 0 {
+		errStr := strings.Join(secondary.Error, " ")
+		err = errors.New(errStr)
+		return
+	}
+	return
+}
+
+func deleteSecondary(domain string) (err error) {
+
+	req, err := http.NewRequest("DELETE", api_url+"/secondary/"+domain, nil)
 	if err != nil {
 		return
 	}
@@ -342,6 +460,12 @@ func makeRequest(r *http.Request) (resp *http.Response, err error) {
 	max_tries := 10
 
 	for t := 0; t < max_tries; t++ {
+		if debug {
+			dump, d_err := httputil.DumpRequestOut(r, true)
+			if d_err == nil {
+				os.Stderr.Write(dump)
+			}
+		}
 		resp, err = client.Do(r)
 		requestsRemaining, _ = strconv.Atoi(resp.Header.Get("x-dnsme-requestsRemaining"))
 		if err != nil && requestsRemaining > 0 {
@@ -353,6 +477,12 @@ func makeRequest(r *http.Request) (resp *http.Response, err error) {
 			time.Sleep(30 * time.Second) // 6 seconds
 		} else {
 			break
+		}
+	}
+	if debug {
+		dump, d_err := httputil.DumpResponse(resp, true)
+		if d_err == nil {
+			os.Stderr.Write(dump)
 		}
 	}
 	if resp.StatusCode == http.StatusForbidden {

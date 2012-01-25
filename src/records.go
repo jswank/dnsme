@@ -198,8 +198,8 @@ var updateRecord = &Command{
 	Run:         runUpdateRecord,
 	CustomFlags: flagsUpdateRecord,
 	UsageLine: `update-record -id <record id> -name <name> -data <record data>
-    [-ttl <ttl>] [-type <record type>] [-gtdLocation <>] [-password <>]
-	<domain>`,
+    [-ttl <ttl>] [-type <record type>] [-gtdLocation <gtdLocation>] 
+    [-password <password>] <domain>`,
 	Short: "update an existing record",
 	Long: `
 'update-record' updates an existing record object in the specified
@@ -229,7 +229,7 @@ PTR, SRV, TXT
 -gtdLocation (optional) is the Global Traffic Director location. Values:
 DEFAULT, US_EAST, US_WEST, EUROPE
 
--password is the password for the entry used for dynamic DNS updates
+-password is the password required for dynamic DNS updates
 
 `,
 }
@@ -275,7 +275,8 @@ var addRecord = &Command{
 	Run:         runAddRecord,
 	CustomFlags: flagsUpdateRecord,
 	UsageLine: `add-record -name <name> -type <record type> [-ttl <ttl>]
-    -data <record data> [-gtdLocation <gtdLocation>] <domain>`,
+    -data <record data> [-gtdLocation <gtdLocation>] [-password <password>]
+    <domain>`,
 	Short: "add a new record",
 	Long: `
 'add-record' adds a record object to the specified domain.
@@ -301,6 +302,8 @@ PTR, SRV, TXT
 
 -gtdLocation is the Global Traffic Director location. Values:
 DEFAULT, US_EAST, US_WEST, EUROPE
+
+-password is the password required for dynamic DNS updates
 
 `,
 }

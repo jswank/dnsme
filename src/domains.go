@@ -10,9 +10,9 @@ import (
 
 var listDomains = &Command{
 	Run:       runListDomains,
-	UsageLine: "list",
+	UsageLine: "domains",
 	Short:     "lists all domains",
-	Long:      "'list' lists all domains currently available.",
+	Long:      "'domains' lists all domains currently available.",
 }
 
 func runListDomains(cmd *Command, args []string) (err error) {
@@ -41,9 +41,9 @@ func runListDomains(cmd *Command, args []string) (err error) {
 var infoDomain = &Command{
 	Run: runInfoDomain,
 	//	CustomFlags: false,
-	UsageLine: "info <domain>",
+	UsageLine: "domain <domain>",
 	Short:     "returns information about a domain",
-	Long:      "'info' returns information about a domain.",
+	Long:      "'domain' returns information about a domain.",
 }
 
 func runInfoDomain(cmd *Command, args []string) (err error) {
