@@ -71,11 +71,6 @@ $ ./dnsme record -id 7693175 -o json example.com
 {"name":"","id":7693175,"type":"MX","data":"10 mailstore1.secureserver.net.",
 "gtdLocation":"DEFAULT","ttl":1800,"password":""}
 
-Issues
-------
-* The REST API indicates that records can be searched based on a number of fields. 
-This does not appear to work.
-
 Todo
 ----
 * Support for secondary name servers
