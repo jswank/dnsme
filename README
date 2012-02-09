@@ -9,13 +9,17 @@ Binaries (statically linked) are available for download at
 https://github.com/jswank/dnsme/downloads
 
 The tool is written in Go (http://golang.org) and was last built with go
-version "weekly.2012-01-27 11507"".  To compile, the Go tool chain must 
+version "weekly.2012-02-07".  To compile, the Go tool chain must 
 be installed- see http://weekly.golang.org/doc/install.html for details.
 
-Once the go tool chain is installed, compilation steps are:
+Once the go tool chain is installed, and the GOPATH environment variable
+is set (see http://weekly.golang.org/cmd/go/#GOPATH_environment_variable),
+compilation steps are:
 
-$ cd src
-$ make
+$ go get github.com/jswank/dnsme
+$ go install github.com/jswank/dnsme
+
+This will install the dnsme command as $GOPATH/bin/dnsme
 
 Usage
 -----
