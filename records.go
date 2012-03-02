@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"errors"
 	"flag"
-	"net/http"
 	"net/url"
 	"os"
 	"strconv"
@@ -180,16 +179,7 @@ func runDeleteRecord(cmd *Command, args []string) (err error) {
 		return
 	}
 
-	req, err := http.NewRequest("DELETE", api_url+"/domains/"+domain+"/records/"+id, nil)
-	if err != nil {
-		return
-	}
-	addDnsmeHeaders(req)
-
-	_, err = makeRequest(req)
-	if err != nil {
-		return
-	}
+	err = deleteDomainRecord(id, domain)
 
 	return
 }
