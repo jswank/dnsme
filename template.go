@@ -30,7 +30,7 @@ The following environment variables should be set:
     DNSME_SECRET_KEY = Secret key
 
 Available commands are:
-{{range .}}{{if .Run}}
+{{range .}}{{if .Runnable}}
     {{.Name | printf "%-16s"}} {{.Short}}{{end}}{{end}}
 
 Use "dnsme help [command]" for more information about a command.
@@ -45,7 +45,7 @@ The flag "-o" specifies the output type.  Available output types are
 
 `
 
-var helpTemplate = `{{if .Run}}usage: dnsme {{.UsageLine}}
+var helpTemplate = `{{if .Runnable}}usage: dnsme {{.UsageLine}}
 
 {{end}}{{.Long | trim}}
 

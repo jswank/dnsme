@@ -88,6 +88,10 @@ func (c *Command) Usage() {
 	os.Exit(2)
 }
 
+func (c *Command) Runnable() bool {
+	return c.Run != nil
+}
+
 func main() {
 
 	flag.Usage = usage
