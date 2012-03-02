@@ -52,18 +52,8 @@ func getDomainList() (domains apiDomainList, err error) {
 	if err != nil {
 		return
 	}
-	addDnsmeHeaders(req)
 
-	resp, err := makeRequest(req)
-	if err != nil {
-		return
-	}
-
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return
-	}
-	err = json.Unmarshal(body, &domains)
+	err = makeRequest(req, &domains)
 	if err != nil {
 		return
 	}
@@ -77,21 +67,12 @@ func getDomainInfo(domain string) (info apiDomain, err error) {
 	if err != nil {
 		return
 	}
-	addDnsmeHeaders(req)
 
-	resp, err := makeRequest(req)
+	err = makeRequest(req, &info)
 	if err != nil {
 		return
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return
-	}
-	err = json.Unmarshal(body, &info)
-	if err != nil {
-		return
-	}
 	if len(info.Error) > 0 {
 		errStr := strings.Join(info.Error, " ")
 		err = errors.New(errStr)
@@ -118,24 +99,14 @@ func addDomain(domain apiDomain) (domainResponse apiDomain, err error) {
 	if err != nil {
 		return
 	}
-	addDnsmeHeaders(req)
 
 	req.Header.Add("content-type", "application/json")
 
-	resp, err := makeRequest(req)
+	err = makeRequest(req,&domainResponse)
 	if err != nil {
 		return
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return
-	}
-
-	err = json.Unmarshal(body, &domainResponse)
-	if err != nil {
-		return
-	}
 
 	if len(domainResponse.Error) > 0 {
 		errStr := strings.Join(domainResponse.Error, " ")
@@ -151,9 +122,8 @@ func deleteDomain(domain string) (err error) {
 	if err != nil {
 		return
 	}
-	addDnsmeHeaders(req)
 
-	_, err = makeRequest(req)
+	err = makeRequest(req,nil)
 	if err != nil {
 		return
 	}
@@ -168,18 +138,8 @@ func getSecondaryList() (domains apiDomainList, err error) {
 	if err != nil {
 		return
 	}
-	addDnsmeHeaders(req)
 
-	resp, err := makeRequest(req)
-	if err != nil {
-		return
-	}
-
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return
-	}
-	err = json.Unmarshal(body, &domains)
+	err = makeRequest(req, &domains)
 	if err != nil {
 		return
 	}
@@ -193,21 +153,12 @@ func getSecondary(domain string) (info apiSecondary, err error) {
 	if err != nil {
 		return
 	}
-	addDnsmeHeaders(req)
 
-	resp, err := makeRequest(req)
+	err = makeRequest(req,&info)
 	if err != nil {
 		return
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return
-	}
-	err = json.Unmarshal(body, &info)
-	if err != nil {
-		return
-	}
 	if len(info.Error) > 0 {
 		errStr := strings.Join(info.Error, " ")
 		err = errors.New(errStr)
@@ -234,21 +185,10 @@ func addSecondary(s apiSecondary) (secondary apiSecondary, err error) {
 	if err != nil {
 		return
 	}
-	addDnsmeHeaders(req)
 
 	req.Header.Add("content-type", "application/json")
 
-	resp, err := makeRequest(req)
-	if err != nil {
-		return
-	}
-
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return
-	}
-
-	err = json.Unmarshal(body, &secondary)
+	err = makeRequest(req, &secondary)
 	if err != nil {
 		return
 	}
@@ -267,9 +207,8 @@ func deleteSecondary(domain string) (err error) {
 	if err != nil {
 		return
 	}
-	addDnsmeHeaders(req)
 
-	_, err = makeRequest(req)
+	err = makeRequest(req,nil)
 	if err != nil {
 		return
 	}
@@ -284,19 +223,8 @@ func getDomainRecord(id, domain string) (record apiRecord, err error) {
 	if err != nil {
 		return
 	}
-	addDnsmeHeaders(req)
 
-	resp, err := makeRequest(req)
-	if err != nil {
-		return
-	}
-
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return
-	}
-
-	err = json.Unmarshal(body, &record)
+	err = makeRequest(req, &record)
 	if err != nil {
 		return
 	}
@@ -323,24 +251,13 @@ func getDomainRecords(domain string, vals interface{}) (records []apiRecord, err
 	if err != nil {
 		return
 	}
-	addDnsmeHeaders(req)
 
 	switch i := vals.(type) {
 	case *url.Values:
 		req.URL.RawQuery = i.Encode()
 	}
 
-	resp, err := makeRequest(req)
-	if err != nil {
-		return
-	}
-
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return
-	}
-
-	err = json.Unmarshal(body, &records)
+	err = makeRequest(req,&records)
 	if err != nil {
 		return
 	}
@@ -360,9 +277,8 @@ func deleteDomainRecord(id, domain string) (err error) {
 	if err != nil {
 		return
 	}
-	addDnsmeHeaders(req)
 
-	_, err = makeRequest(req)
+	err = makeRequest(req, nil)
 	if err != nil {
 		return
 	}
@@ -400,27 +316,16 @@ func addDomainRecord(domain string, r apiRecord) (record apiRecord, err error) {
 	if err != nil {
 		return
 	}
-	addDnsmeHeaders(req)
 
 	req.Header.Add("content-type", "application/json")
 
-	resp, err := makeRequest(req)
+	err = makeRequest(req, &record)
 	if err != nil {
 		return
 	}
 
 	// update requests return an empty body
 	if isUpdate {
-		return
-	}
-
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return
-	}
-
-	err = json.Unmarshal(body, &record)
-	if err != nil {
 		return
 	}
 
@@ -454,8 +359,13 @@ func addDnsmeHeaders(r *http.Request) {
  * uses a simple retry mechanism whenever the API rate limit has been 
  * exceeded.
  */
-func makeRequest(r *http.Request) (resp *http.Response, err error) {
+func makeRequest(r *http.Request, into interface{}) (err error) {
+	var resp *http.Response
+
+	// make this part of the struct?
 	client := &http.Client{}
+
+	addDnsmeHeaders(r)
 
 	max_tries := 10
 
@@ -493,5 +403,16 @@ func makeRequest(r *http.Request) (resp *http.Response, err error) {
 		err = errors.New("Not found")
 		return
 	}
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return
+	}
+
+	err = json.Unmarshal(body, into)
+	if err != nil {
+		return
+	}
+
 	return
 }
