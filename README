@@ -9,7 +9,7 @@ Binaries (statically linked) are available for download at
 https://github.com/jswank/dnsme/downloads
 
 The tool is written in Go (http://golang.org) and was last built with go
-version "weekly.2012-02-07".  To compile, the Go tool chain must 
+version "weekly.2012-02-22".  To compile, the Go tool chain must 
 be installed- see http://weekly.golang.org/doc/install.html for details.
 
 Once the go tool chain is installed, and the GOPATH environment variable
