@@ -102,11 +102,10 @@ func addDomain(domain apiDomain) (domainResponse apiDomain, err error) {
 
 	req.Header.Add("content-type", "application/json")
 
-	err = makeRequest(req,&domainResponse)
+	err = makeRequest(req, &domainResponse)
 	if err != nil {
 		return
 	}
-
 
 	if len(domainResponse.Error) > 0 {
 		errStr := strings.Join(domainResponse.Error, " ")
@@ -123,7 +122,7 @@ func deleteDomain(domain string) (err error) {
 		return
 	}
 
-	err = makeRequest(req,nil)
+	err = makeRequest(req, nil)
 	if err != nil {
 		return
 	}
@@ -154,7 +153,7 @@ func getSecondary(domain string) (info apiSecondary, err error) {
 		return
 	}
 
-	err = makeRequest(req,&info)
+	err = makeRequest(req, &info)
 	if err != nil {
 		return
 	}
@@ -208,7 +207,7 @@ func deleteSecondary(domain string) (err error) {
 		return
 	}
 
-	err = makeRequest(req,nil)
+	err = makeRequest(req, nil)
 	if err != nil {
 		return
 	}
@@ -257,7 +256,7 @@ func getDomainRecords(domain string, vals interface{}) (records []apiRecord, err
 		req.URL.RawQuery = i.Encode()
 	}
 
-	err = makeRequest(req,&records)
+	err = makeRequest(req, &records)
 	if err != nil {
 		return
 	}
@@ -379,11 +378,11 @@ func makeRequest(r *http.Request, into interface{}) (err error) {
 		resp, err = client.Do(r)
 		requestsRemaining, _ = strconv.Atoi(resp.Header.Get("x-dnsme-requestsRemaining"))
 		if err != nil && requestsRemaining > 0 {
-			//	fmt.Printf("Error performing HTTP request, %s", err)
+			// fmt.Printf("Error performing HTTP request, %s", err)
 			return
 		}
 		if requestsRemaining == 0 {
-			fmt.Fprintf(os.Stderr, "API rate-limit exceeded, sleeping for 20 seconds (try %d of %d)\n", t, max_tries)
+			//fmt.Fprintf(os.Stderr, "API rate-limit exceeded, sleeping for 20 seconds (try %d of %d)\n", t, max_tries)
 			time.Sleep(30 * time.Second) // 6 seconds
 		} else {
 			break
