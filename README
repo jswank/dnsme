@@ -1,6 +1,6 @@
 This is a command line tool that can be used to manage DNS information
 hosted at DNS Made Easy (http://www.dnsmadeeasy.com) using their REST
-API.  
+API (v1.2).  
 
 Installation
 ------------
@@ -8,12 +8,11 @@ Installation
 Binaries (statically linked) are available for download at
 https://github.com/jswank/dnsme/downloads
 
-The tool is written in Go (http://golang.org) and was last built with go
-version "weekly.2012-02-22".  To compile, the Go tool chain must 
-be installed- see http://weekly.golang.org/doc/install.html for details.
+The tool is written in Go (http://golang.org). To compile, the Go tool
+chain must be installed- see http://weekly.golang.org/doc/install.html
+for details.
 
-Once the go tool chain is installed, and the GOPATH environment variable
-is set (see http://weekly.golang.org/cmd/go/#GOPATH_environment_variable),
+Once the go tool chain is installed and environment configured,
 compilation steps are:
 
 $ go get github.com/jswank/dnsme
@@ -56,8 +55,8 @@ Available commands are:
     add-record       add a new record
     update-record    update an existing record
     delete-record    delete a record from the domain
-    import           import domain info & records
-    export           export domain info & records
+    import           import domain info & records from JSON
+    export           export domain info & records into JSON 
 
 Use "dnsme help [command]" for more information about a command.
 
