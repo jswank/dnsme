@@ -7,7 +7,7 @@ API (v1.2).
 ## Installation
 
 Binaries (statically linked) are available for download at
-https://github.com/jswank/dnsme/downloads
+https://github.com/jswank/dnsme/releases
 
 The tool is written in Go (http://golang.org). To compile, the Go tool
 chain must be installed- see http://golang.org/doc/install for installation
