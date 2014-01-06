@@ -62,5 +62,5 @@ var secondaryTemplate = `{{range .IP}}{{printf "IP: %s\n" .}}{{end}}`
 var secondaryTemplateCSV = `{{.Name}},{{range .IP}}{{.}} {{end}}`
 
 // looks like zone file entries
-var recordTemplate = `{{if .Name}}{{printf "%-20s" .Name}}{{else}}{{printf "%-20s" "@"}}{{end}} {{printf "%-6d".TTL}} {{printf "%-5s".Type}} {{if .Data}}{{printf "%-32s" .Data}}{{else}}{{printf "%-32s" "@"}}{{end}} ; id={{printf "%-7d" .ID}}, gtd={{.GtdLocation}}
+var recordTemplate = `{{if .Name}}{{printf "%-20s" .Name}}{{else}}{{printf "%-20s" "@"}}{{end}} {{printf "%-6d" .TTL}} {{printf "%-5s" .Type}} {{if .Data}}{{printf "%-32s" .Data}}{{else}}{{printf "%-32s" "@"}}{{end}} ; id={{printf "%-7d" .ID}}, gtd={{.GtdLocation}}
 `
