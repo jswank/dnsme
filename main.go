@@ -8,13 +8,7 @@ import (
 	"strings"
 )
 
-const (
-	// Production Values
-	API_URL = "http://api.dnsmadeeasy.com/V1.2"
-
-	// Development Values
-	//API_URL = "http://api.sandbox.dnsmadeeasy.com/V1.2"
-)
+const API_URL = "http://api.dnsmadeeasy.com/V1.2"
 
 var (
 	api_url    string
