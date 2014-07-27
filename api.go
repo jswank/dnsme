@@ -48,7 +48,7 @@ type apiRecord struct {
 
 func getDomainList() (domains apiDomainList, err error) {
 
-	req, err := http.NewRequest("GET", api_url+"/domains/", nil)
+	req, err := http.NewRequest("GET", apiURL+"/domains/", nil)
 	if err != nil {
 		return
 	}
@@ -63,7 +63,7 @@ func getDomainList() (domains apiDomainList, err error) {
 
 func getDomainInfo(domain string) (info apiDomain, err error) {
 
-	req, err := http.NewRequest("GET", api_url+"/domains/"+domain, nil)
+	req, err := http.NewRequest("GET", apiURL+"/domains/"+domain, nil)
 	if err != nil {
 		return
 	}
@@ -93,9 +93,9 @@ func addDomain(domain apiDomain) (domainResponse apiDomain, err error) {
 
 	var buf bytes.Buffer
 	buf.Write(jsonBody)
-	// END TODO	
+	// END TODO
 
-	req, err := http.NewRequest("PUT", api_url+"/domains/"+domain.Name, &buf)
+	req, err := http.NewRequest("PUT", apiURL+"/domains/"+domain.Name, &buf)
 	if err != nil {
 		return
 	}
@@ -117,7 +117,7 @@ func addDomain(domain apiDomain) (domainResponse apiDomain, err error) {
 
 func deleteDomain(domain string) (err error) {
 
-	req, err := http.NewRequest("DELETE", api_url+"/domains/"+domain, nil)
+	req, err := http.NewRequest("DELETE", apiURL+"/domains/"+domain, nil)
 	if err != nil {
 		return
 	}
@@ -133,7 +133,7 @@ func deleteDomain(domain string) (err error) {
 
 func getSecondaryList() (domains apiDomainList, err error) {
 
-	req, err := http.NewRequest("GET", api_url+"/secondary/", nil)
+	req, err := http.NewRequest("GET", apiURL+"/secondary/", nil)
 	if err != nil {
 		return
 	}
@@ -148,7 +148,7 @@ func getSecondaryList() (domains apiDomainList, err error) {
 
 func getSecondary(domain string) (info apiSecondary, err error) {
 
-	req, err := http.NewRequest("GET", api_url+"/secondary/"+domain, nil)
+	req, err := http.NewRequest("GET", apiURL+"/secondary/"+domain, nil)
 	if err != nil {
 		return
 	}
@@ -178,9 +178,9 @@ func addSecondary(s apiSecondary) (secondary apiSecondary, err error) {
 
 	var buf bytes.Buffer
 	buf.Write(jsonBody)
-	// END TODO	
+	// END TODO
 
-	req, err := http.NewRequest("PUT", api_url+"/secondary/"+s.Name, &buf)
+	req, err := http.NewRequest("PUT", apiURL+"/secondary/"+s.Name, &buf)
 	if err != nil {
 		return
 	}
@@ -202,7 +202,7 @@ func addSecondary(s apiSecondary) (secondary apiSecondary, err error) {
 
 func deleteSecondary(domain string) (err error) {
 
-	req, err := http.NewRequest("DELETE", api_url+"/secondary/"+domain, nil)
+	req, err := http.NewRequest("DELETE", apiURL+"/secondary/"+domain, nil)
 	if err != nil {
 		return
 	}
@@ -218,7 +218,7 @@ func deleteSecondary(domain string) (err error) {
 
 func getDomainRecord(id, domain string) (record apiRecord, err error) {
 
-	req, err := http.NewRequest("GET", api_url+"/domains/"+domain+"/records/"+id, nil)
+	req, err := http.NewRequest("GET", apiURL+"/domains/"+domain+"/records/"+id, nil)
 	if err != nil {
 		return
 	}
@@ -234,8 +234,8 @@ func getDomainRecord(id, domain string) (record apiRecord, err error) {
 		return
 	}
 
-	// This is a shortcoming in the DNSME API: CNAME responses may have an 
-	// empty "data" field, but updating/adding records always require the 
+	// This is a shortcoming in the DNSME API: CNAME responses may have an
+	// empty "data" field, but updating/adding records always require the
 	// data field.
 	if record.Type == "CNAME" && record.Data == "" {
 		record.Data = domain + "."
@@ -246,7 +246,7 @@ func getDomainRecord(id, domain string) (record apiRecord, err error) {
 
 func getDomainRecords(domain string, vals interface{}) (records []apiRecord, err error) {
 
-	req, err := http.NewRequest("GET", api_url+"/domains/"+domain+"/records", nil)
+	req, err := http.NewRequest("GET", apiURL+"/domains/"+domain+"/records", nil)
 	if err != nil {
 		return
 	}
@@ -272,7 +272,7 @@ func getDomainRecords(domain string, vals interface{}) (records []apiRecord, err
 
 func deleteDomainRecord(id, domain string) (err error) {
 
-	req, err := http.NewRequest("DELETE", api_url+"/domains/"+domain+"/records/"+id, nil)
+	req, err := http.NewRequest("DELETE", apiURL+"/domains/"+domain+"/records/"+id, nil)
 	if err != nil {
 		return
 	}
@@ -298,16 +298,16 @@ func addDomainRecord(domain string, r apiRecord) (record apiRecord, err error) {
 
 	var buf bytes.Buffer
 	buf.Write(jsonBody)
-	// END TODO	
+	// END TODO
 
 	// whether this is an "add" or "update" depends on the value of the "ID" field
 	var method, url string
 	if r.ID == 0 { // add
 		method = "POST"
-		url = api_url + "/domains/" + domain + "/records/"
+		url = apiURL + "/domains/" + domain + "/records/"
 	} else { // update
 		method = "PUT"
-		url = api_url + "/domains/" + domain + "/records/" + strconv.Itoa(r.ID)
+		url = apiURL + "/domains/" + domain + "/records/" + strconv.Itoa(r.ID)
 		isUpdate = true
 	}
 
@@ -338,12 +338,12 @@ func addDomainRecord(domain string, r apiRecord) (record apiRecord, err error) {
 }
 
 func addDnsmeHeaders(r *http.Request) {
-	r.Header.Add("x-dnsme-apiKey", api_key)
+	r.Header.Add("x-dnsme-apiKey", apiKey)
 
 	requestDate := time.Now().UTC().Format(time.RFC1123)
 	r.Header.Add("x-dnsme-requestDate", requestDate)
 
-	h := hmac.New(sha1.New, []byte(secret_key))
+	h := hmac.New(sha1.New, []byte(secretKey))
 	h.Write([]byte(requestDate))
 	r.Header.Add("x-dnsme-hmac", fmt.Sprintf("%x", h.Sum(nil)))
 
@@ -354,8 +354,8 @@ func addDnsmeHeaders(r *http.Request) {
 
 /*
  * makeRequest() performs http requests that are built by API functions.
- * It updates the global requestsRemaining based on the API response, and 
- * uses a simple retry mechanism whenever the API rate limit has been 
+ * It updates the global requestsRemaining based on the API response, and
+ * uses a simple retry mechanism whenever the API rate limit has been
  * exceeded.
  */
 func makeRequest(r *http.Request, into interface{}) (err error) {
@@ -366,12 +366,12 @@ func makeRequest(r *http.Request, into interface{}) (err error) {
 
 	addDnsmeHeaders(r)
 
-	max_tries := 10
+	maxTries := 10
 
-	for t := 0; t < max_tries; t++ {
+	for t := 0; t < maxTries; t++ {
 		if debug {
-			dump, d_err := httputil.DumpRequestOut(r, true)
-			if d_err == nil {
+			dump, dErr := httputil.DumpRequestOut(r, true)
+			if dErr == nil {
 				os.Stderr.Write(dump)
 			}
 		}
@@ -382,15 +382,15 @@ func makeRequest(r *http.Request, into interface{}) (err error) {
 			return
 		}
 		if requestsRemaining == 0 {
-			//fmt.Fprintf(os.Stderr, "API rate-limit exceeded, sleeping for 20 seconds (try %d of %d)\n", t, max_tries)
+			//fmt.Fprintf(os.Stderr, "API rate-limit exceeded, sleeping for 20 seconds (try %d of %d)\n", t, maxTries)
 			time.Sleep(30 * time.Second) // 6 seconds
 		} else {
 			break
 		}
 	}
 	if debug {
-		dump, d_err := httputil.DumpResponse(resp, true)
-		if d_err == nil {
+		dump, dErr := httputil.DumpResponse(resp, true)
+		if dErr == nil {
 			os.Stderr.Write(dump)
 		}
 	}

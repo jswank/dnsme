@@ -39,7 +39,7 @@ func getReader(input string) (reader io.Reader, err error) {
 
 func runImport(cmd *Command, args []string) (err error) {
 
-	var import_domains []exportDomain
+	var importDomains []exportDomain
 
 	// open file
 	r, err := getReader(cmd.Flag.Lookup("file").Value.String())
@@ -49,12 +49,12 @@ func runImport(cmd *Command, args []string) (err error) {
 
 	// parse it
 	d := json.NewDecoder(r)
-	err = d.Decode(&import_domains)
+	err = d.Decode(&importDomains)
 	if err != nil {
 		return
 	}
 
-	for _, d := range import_domains {
+	for _, d := range importDomains {
 		// get domain info
 		// if it does not exist, create it
 		_, err = getDomainInfo(d.Domain.Name)

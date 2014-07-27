@@ -8,12 +8,11 @@ import (
 	"strings"
 )
 
-const API_URL = "http://api.dnsmadeeasy.com/V1.2"
-
 var (
-	api_url    string
-	api_key    string
-	secret_key string
+	// apiURL may be overridden by DNSME_API_URL environment variable.
+	apiURL    = "http://api.dnsmadeeasy.com/V1.2"
+	apiKey    string
+	secretKey string
 
 	outputType        string
 	debug             bool
@@ -76,12 +75,14 @@ func (c *Command) Name() string {
 	return name
 }
 
+// Usage prints command usage info.
 func (c *Command) Usage() {
 	fmt.Fprintf(os.Stderr, "usage: %s\n\n", c.UsageLine)
 	fmt.Fprintf(os.Stderr, "%s\n", strings.TrimSpace(c.Long))
 	os.Exit(2)
 }
 
+// Runnable returns a boolean indicating whether the Command has a Run method.
 func (c *Command) Runnable() bool {
 	return c.Run != nil
 }
@@ -102,19 +103,18 @@ func main() {
 		return
 	}
 
-	api_url = os.Getenv("DNSME_API_URL")
-	if api_url == "" {
-		api_url = API_URL
+	if os.Getenv("DNSME_API_URL") != "" {
+		apiURL = os.Getenv("DNSME_API_URL")
 	}
 
-	api_key = os.Getenv("DNSME_API_KEY")
-	if api_key == "" {
+	apiKey = os.Getenv("DNSME_API_KEY")
+	if apiKey == "" {
 		fmt.Fprint(os.Stderr, "DNSME_API_KEY environment variable is not set\n")
 		os.Exit(1)
 	}
 
-	secret_key = os.Getenv("DNSME_SECRET_KEY")
-	if secret_key == "" {
+	secretKey = os.Getenv("DNSME_SECRET_KEY")
+	if secretKey == "" {
 		fmt.Fprint(os.Stderr, "DNSME_SECRET_KEY environment variable is not set\n")
 		os.Exit(1)
 	}

@@ -34,7 +34,7 @@ func runExport(cmd *Command, args []string) (err error) {
 		sort.Strings(domains.List)
 	}
 
-	var export_domains []exportDomain
+	var exportDomains []exportDomain
 
 	for _, domain := range domains.List {
 		var d exportDomain
@@ -46,15 +46,15 @@ func runExport(cmd *Command, args []string) (err error) {
 		if err != nil {
 			return
 		}
-		export_domains = append(export_domains, d)
+		exportDomains = append(exportDomains, d)
 	}
 
-	b, err := json.Marshal(export_domains)
+	b, err := json.Marshal(exportDomains)
 	if err != nil {
 		return
 	}
 	fmt.Printf("%s\n", b)
-	//	outputExportDomains(export_domains)
+	//	outputExportDomains(exportDomains)
 
 	return
 
