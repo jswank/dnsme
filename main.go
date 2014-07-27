@@ -87,6 +87,23 @@ func (c *Command) Runnable() bool {
 	return c.Run != nil
 }
 
+// Read environment variables.
+func init() {
+	if os.Getenv("DNSME_API_URL") != "" {
+		apiURL = os.Getenv("DNSME_API_URL")
+	}
+	apiKey = os.Getenv("DNSME_API_KEY")
+	if apiKey == "" {
+		fmt.Fprint(os.Stderr, "DNSME_API_KEY environment variable is not set\n")
+		os.Exit(1)
+	}
+	secretKey = os.Getenv("DNSME_SECRET_KEY")
+	if secretKey == "" {
+		fmt.Fprint(os.Stderr, "DNSME_SECRET_KEY environment variable is not set\n")
+		os.Exit(1)
+	}
+}
+
 func main() {
 
 	flag.Usage = usage
@@ -101,22 +118,6 @@ func main() {
 	if args[0] == "help" {
 		help(args[1:])
 		return
-	}
-
-	if os.Getenv("DNSME_API_URL") != "" {
-		apiURL = os.Getenv("DNSME_API_URL")
-	}
-
-	apiKey = os.Getenv("DNSME_API_KEY")
-	if apiKey == "" {
-		fmt.Fprint(os.Stderr, "DNSME_API_KEY environment variable is not set\n")
-		os.Exit(1)
-	}
-
-	secretKey = os.Getenv("DNSME_SECRET_KEY")
-	if secretKey == "" {
-		fmt.Fprint(os.Stderr, "DNSME_SECRET_KEY environment variable is not set\n")
-		os.Exit(1)
 	}
 
 	for _, cmd := range commands {
