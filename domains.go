@@ -42,8 +42,8 @@ var infoDomain = &Command{
 	Run: runInfoDomain,
 	//	CustomFlags: false,
 	UsageLine: "domain <domain>",
-	Short:     "returns information about a domain",
-	Long:      "'domain' returns information about a domain.",
+	Short:     "returns name servers for a domain",
+	Long:      "'domain' returns name servers for a domain.",
 }
 
 func runInfoDomain(cmd *Command, args []string) (err error) {

@@ -46,7 +46,7 @@ This will install the `dnsme` command as $GOPATH/bin/dnsme
 	Available commands are:
 
 		domains          lists all domains
-		domain           returns information about a domain
+		domain           returns name servers for a domain
 		add-domain       adds a domains
 		delete-domain    deletes a domain
 		secondaries      lists all secondary domains
